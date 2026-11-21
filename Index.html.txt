@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baby's Stores — Everything You Love, All in One Place</title>
+<style>
+:root{
+  --brand:#ff6a00; --brand-dark:#e04e00; --accent:#00b2ff; --ink:#1f2430;
+  --muted:#6b7280; --bg:#f6f7f9; --card:#ffffff; --line:#e5e7eb; --ok:#16a34a;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{background:var(--bg);color:var(--ink)}
+a{text-decoration:none;color:inherit}
+img{max-width:100%}
+button{cursor:pointer;border:none;font-size:14px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+/* Announcement bar */
+.announce{background:linear-gradient(90deg,#1f2430,#3b2d5e);color:#fff;text-align:center;font-size:13px;padding:8px;letter-spacing:.3px}
+.announce b{color:#ffd166}
+/* Header */
+header{background:var(--card);position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.hd{display:flex;align-items:center;gap:16px;padding:12px 0;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--brand)}
+.logo svg{flex:none}
+.logo small{display:block;font-size:10px;color:var(--muted);font-weight:500;letter-spacing:.5px}
+.search{flex:1;min-width:220px;display:flex;border:2px solid var(--brand);border-radius:8px;overflow:hidden}
+.search input{flex:1;border:none;outline:none;padding:10px 12px;font-size:14px}
+.search button{background:var(--brand);color:#fff;padding:10px 20px;font-weight:600}
+.hicon{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);position:relative;padding:4px 6px;border-radius:8px}
+.hicon:hover{background:#f1f2f4}
+.badge{position:absolute;top:-2px;right:0;background:var(--brand);color:#fff;font-size:10px;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center}
+select{border:1px solid var(--line);border-radius:6px;padding:6px;font-size:13px;background:#fff}
+/* Nav */
+nav{background:var(--ink);color:#fff}
+nav .wrap{display:flex;gap:4px;overflow-x:auto}
+nav a{padding:12px 16px;font-size:14px;white-space:nowrap;border-bottom:3px solid transparent}
+nav a:hover,nav a.active{border-bottom-color:var(--brand);color:#ffd8b8}
+nav a.deals{color:#ffd166;font-weight:600}
+/* Hero */
+.hero{background:linear-gradient(105deg,#ff6a00 0%,#ff3d77 55%,#7b2ff7 100%);color:#fff;border-radius:14px;margin:20px auto;overflow:hidden;position:relative;min-height:280px;display:flex;align-items:center}
+.slide{display:none;padding:48px;width:100%;animation:fade .6s}
+.slide.on{display:block}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.slide h1{font-size:40px;line-height:1.15;margin-bottom:12px;max-width:560px}
+.slide p{font-size:16px;opacity:.92;margin-bottom:20px;max-width:480px}
+.cta{background:#fff;color:var(--brand-dark);padding:12px 30px;border-radius:30px;font-weight:700;font-size:15px}
+.dots{position:absolute;bottom:14px;left:48px;display:flex;gap:8px}
+.dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.45);cursor:pointer}
+.dots i.on{background:#fff}
+/* Sections */
+section{margin:28px 0}
+.sec-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.sec-h h2{font-size:20px;border-left:4px solid var(--brand);padding-left:10px}
+.sec-h a{font-size:13px;color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;transition:.2s;display:flex;flex-direction:column}
+.pcard:hover{box-shadow:0 6px 18px rgba(0,0,0,.1);transform:translateY(-3px)}
+.pimg{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:56px;background:#f2f3f5;position:relative}
+.off{position:absolute;top:8px;left:8px;background:#e11d48;color:#fff;font-size:11px;padding:3px 8px;border-radius:20px;font-weight:600}
+.pbody{padding:12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.pname{font-size:14px;font-weight:600;height:38px;overflow:hidden}
+.pcat{font-size:11px;color:var(--muted)}
+.stars{color:#f59e0b;font-size:12px}
+.price{display:flex;align-items:baseline;gap:8px}
+.price b{color:var(--brand-dark);font-size:17px}
+.price s{color:var(--muted);font-size:12px}
+.pbtns{display:flex;gap:6px;margin-top:auto}
+.btn-add{flex:1;background:var(--brand);color:#fff;padding:9px;border-radius:6px;font-weight:600}
+.btn-add:hover{background:var(--brand-dark)}
+.btn-wish{background:#fff;border:1px solid var(--line);padding:9px 11px;border-radius:6px}
+.btn-wish.on{color:#e11d48;border-color:#e11d48}
+/* Categories strip */
+.cats{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.cat{min-width:110px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 10px;text-align:center;font-size:12px;font-weight:600;cursor:pointer}
+.cat span{display:block;font-size:26px;margin-bottom:6px}
+.cat:hover,.cat.on{border-color:var(--brand);color:var(--brand-dark)}
+/* Filters toolbar */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--card);padding:12px;border:1px solid var(--line);border-radius:10px;margin-bottom:16px}
+.toolbar input[type=number],.toolbar select{padding:8px;border:1px solid var(--line);border-radius:6px;font-size:13px;width:110px}
+/* Drawer / modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;display:none}
+.overlay.on{display:block}
+.drawer{position:fixed;top:0;right:-420px;width:400px;max-width:92vw;height:100%;background:#fff;z-index:100;transition:.3s;display:flex;flex-direction:column}
+.drawer.on{right:0}
+.drawer h3{padding:16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.drawer .items{flex:1;overflow-y:auto;padding:12px}
+.drawer .foot{border-top:1px solid var(--line);padding:16px}
+.citem{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);align-items:center}
+.citem .ci{width:56px;height:56px;background:#f2f3f5;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:26px;flex:none}
+.citem .grow{flex:1}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:24px;height:24px;border:1px solid var(--line);border-radius:5px;background:#fff}
+.modal{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.modal .box{background:#fff;border-radius:14px;max-width:860px;width:100%;max-height:90vh;overflow-y:auto;position:relative;animation:fade .3s}
+.modal .close{position:absolute;top:10px;right:12px;background:#f1f2f4;border-radius:50%;width:32px;height:32px;font-size:16px;z-index:5}
+.pd{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:28px}
+.pd .gal{aspect-ratio:1;background:#f2f3f5;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:96px}
+@media(max-width:700px){.pd{grid-template-columns:1fr}.slide h1{font-size:26px}.hero .slide{padding:28px}}
+.pd h2{font-size:22px;margin-bottom:6px}
+.pd .big{font-size:26px;color:var(--brand-dark)}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:6px 14px;margin:4px 4px 0 0;cursor:pointer;font-size:13px;background:#fff}
+.chip.on{border-color:var(--brand);background:#fff4ec;color:var(--brand-dark);font-weight:600}
+.btn2{background:var(--ink);color:#fff;padding:12px 20px;border-radius:8px;font-weight:600}
+.btn3{background:#fff;border:2px solid var(--brand);color:var(--brand);padding:10px 18px;border-radius:8px;font-weight:600}
+/* Toast */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:30px;z-index:200;opacity:0;transition:.3s;font-size:14px}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Footer */
+footer{background:var(--ink);color:#cbd2dc;margin-top:50px;font-size:13px}
+footer .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;padding:36px 0}
+footer h4{color:#fff;margin-bottom:10px;font-size:14px}
+footer a{display:block;padding:4px 0}
+footer a:hover{color:var(--brand)}
+footer .bar{border-top:1px solid #39404d;padding:14px 0;text-align:center}
+/* Checkout steps */
+.steps{display:flex;gap:6px;margin-bottom:16px}
+.steps i{flex:1;height:5px;background:var(--line);border-radius:4px}
+.steps i.on{background:var(--brand)}
+.form input,.form select{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;margin-bottom:10px;font-size:14px}
+.form label{font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+/* Admin */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left}
+th{background:#f8f9fa}
+.tag{padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.tag.ok{background:#dcfce7;color:#15803d}.tag.warn{background:#fef9c3;color:#a16207}.tag.bad{background:#fee2e2;color:#b91c1c}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<div class="announce">🚚 FREE Worldwide Shipping on orders over <b>$49</b> &nbsp;•&nbsp; 🎁 Use code <b>BABY10</b> for 10% off your first order</div>
+
+<header>
+  <div class="wrap hd">
+    <a class="logo" href="#" onclick="goHome(event)">
+      <svg width="38" height="38" viewBox="0 0 40 40"><circle cx="20" cy="20" r="19" fill="#ff6a00"/><text x="20" y="27" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">B</text></svg>
+      Baby's Stores<small>Everything You Love, All in One Place</small>
+    </a>
+    <div class="search">
+      <input id="q" placeholder="Search products, brands and deals…" onkeydown="if(event.key==='Enter')doSearch()">
+      <button onclick="doSearch()">Search</button>
+    </div>
+    <div style="display:flex;gap:2px;margin-left:auto">
+      <a class="hicon" href="#" onclick="openModal('accountModal');return false">👤<span>Account</span></a>
+      <a class="hicon" href="#" onclick="openWishlist(event)">❤️<span>Wishlist</span><b class="badge" id="wishCount">0</b></a>
+      <a class="hicon" href="#" onclick="openCart(event)">🛒<span>Cart</span><b class="badge" id="cartCount">0</b></a>
+      <select id="currency" onchange="renderProducts()">
+        <option value="USD">USD $</option><option value="EUR">EUR €</option><option value="GBP">GBP £</option>
+      </select>
+      <select><option>🌐 English</option><option>🌐 Español</option><option>🌐 Français</option></select>
+    </div>
+  </div>
+  <nav><div class="wrap">
+    <a href="#" onclick="goHome(event)" class="active">Home</a>
+    <a href="#" onclick="showAll(event)">All Products</a>
+    <a href="#" onclick="toggleCats(event)">Categories ▾</a>
+    <a href="#" onclick="filterTag(event,'new')">New Arrivals</a>
+    <a href="#" onclick="filterTag(event,'best')">Best Sellers</a>
+    <a href="#" class="deals" onclick="filterTag(event,'deal')">⚡ Today's Deals</a>
+    <a href="#" onclick="openPage('contact')">Contact Us</a>
+    <a href="#" onclick="openAdmin(event)" style="margin-left:auto;color:#9ca3af">🔐 Owner Admin</a>
+  </div></nav>
+</header>
+
+<main class="wrap" id="app">
+  <!-- HOME VIEW -->
+  <div id="view-home">
+    <div class="hero">
+      <div class="slide on"><h1>Mega Tech Sale — Up to 50% Off</h1><p>Headphones, smartwatches, speakers and more from the owner-curated collection. Ships worldwide.</p><button class="cta" onclick="filterTag(event,'deal')">Shop Deals Now</button></div>
+      <div class="slide"><h1>New Arrivals Just Landed</h1><p>Fresh fashion, home & kitchen, and beauty picks added this week.</p><button class="cta" onclick="filterTag(event,'new')">Explore New In</button></div>
+      <div class="slide"><h1>Free Shipping Over $49</h1><p>Delivering to 100+ countries. Track every order, every step of the way.</p><button class="cta" onclick="showAll(event)">Start Shopping</button></div>
+      <div class="dots" id="dots"></div>
+    </div>
+
+    <section><div class="sec-h"><h2>Shop by Category</h2></div>
+      <div class="cats" id="catStrip"></div>
+    </section>
+
+    <section><div class="sec-h"><h2>⚡ Flash Deals</h2><a href="#" onclick="filterTag(event,'deal')">View all →</a></div>
+      <div class="grid" id="grid-deals"></div>
+    </section>
+
+    <section><div class="sec-h"><h2>🔥 Best Sellers</h2><a href="#" onclick="filterTag(event,'best')">View all →</a></div>
+      <div class="grid" id="grid-best"></div>
+    </section>
+
+    <section><div class="sec-h"><h2>✨ New Arrivals</h2><a href="#" onclick="filterTag(event,'new')">View all →</a></div>
+      <div class="grid" id="grid-new"></div>
+    </section>
+
+    <section><div class="sec-h"><h2>💎 Featured & Recommended</h2></div>
+      <div class="grid" id="grid-feat"></div>
+    </section>
+  </div>
+
+  <!-- SHOP VIEW -->
+  <div id="view-shop" style="display:none">
+    <div class="toolbar">
+      <b id="shopTitle" style="margin-right:auto">All Products</b>
+      <input type="number" id="fMin" placeholder="Min price" onchange="renderShop()">
+      <input type="number" id="fMax" placeholder="Max price" onchange="renderShop()">
+      <select id="fSort" onchange="renderShop()">
+        <option value="pop">Sort: Popularity</option><option value="low">Price: Low → High</option>
+        <option value="high">Price: High → Low</option><option value="rate">Top Rated</option><option value="new">Newest</option>
+      </select>
+      <label style="font-size:13px"><input type="checkbox" id="fDeal" onchange="renderShop()"> On sale</label>
+    </div>
+    <div class="grid" id="grid-shop"></div>
+  </div>
+
+  <!-- STATIC PAGE VIEW -->
+  <div id="view-page" style="display:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:32px;max-width:800px;margin:28px auto">
+    <h2 id="pageTitle"></h2><div id="pageBody" style="margin-top:14px;line-height:1.7;font-size:14px"></div>
+  </div>
+</main>
+
+<footer><div class="wrap">
+  <div class="cols">
+    <div><h4>Baby's Stores</h4><p>A single-owner international online store. Every product is hand-picked and shipped directly by us — no third-party sellers, ever.</p></div>
+    <div><h4>Customer Care</h4><a href="#" onclick="openPage('faq')">FAQ</a><a href="#" onclick="openPage('shipping')">Shipping Policy</a><a href="#" onclick="openPage('returns')">Return & Refund Policy</a><a href="#" onclick="openPage('privacy')">Privacy Policy</a><a href="#" onclick="openPage('terms')">Terms & Conditions</a></div>
+    <div><h4>Company</h4><a href="#" onclick="openPage('about')">About Us</a><a href="#" onclick="openPage('contact')">Contact Us</a><a href="#" onclick="openModal('trackModal');return false">Track My Order</a></div>
+    <div><h4>We Accept</h4><p style="font-size:22px">💳 🅿️ 💰</p><p style="margin-top:8px">Secure payments. We never store card numbers.</p></div>
+  </div>
+  <div class="bar">© 2026 Baby's Stores. All rights reserved. Single-owner store — I am the only seller.</div>
+</div></footer>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+<div class="drawer" id="cartDrawer">
+  <h3>🛒 Your Cart <button class="close" onclick="closeAll()">✕</button></h3>
+  <div class="items" id="cartItems"></div>
+  <div class="foot">
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span>Subtotal</span><b id="cartSub">$0.00</b></div>
+    <div style="display:flex;gap:8px"><button class="btn-add" style="flex:1" onclick="startCheckout()">Proceed to Checkout</button>
+    <button class="btn3" onclick="closeAll()">Continue Shopping</button></div>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal" id="productModal"><div class="box">
+  <button class="close" onclick="closeAll()">✕</button>
+  <div class="pd" id="pdContent"></div>
+</div></div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal" id="checkoutModal"><div class="box" style="max-width:520px;padding:28px">
+  <button class="close" onclick="closeAll()">✕</button>
+  <h2 style="margin-bottom:14px">Secure Checkout</h2>
+  <div class="steps"><i id="s1" class="on"></i><i id="s2"></i><i id="s3"></i></div>
+  <div id="ck1" class="form">
+    <label>Full name</label><input id="ckName" placeholder="Jane Doe">
+    <label>Email</label><input id="ckEmail" placeholder="jane@email.com">
+    <label>Delivery address</label><input id="ckAddr" placeholder="Street, City, Country">
+    <label>Country</label><select id="ckCountry"><option>United States</option><option>United Kingdom</option><option>India</option><option>Germany</option><option>Australia</option><option>United Arab Emirates</option></select>
+    <label>Shipping method</label><select id="ckShip"><option value="4.99">Standard (7–14 days) — $4.99</option><option value="14.99">Express (3–5 days) — $14.99</option></select>
+    <label>Coupon code</label><div style="display:flex;gap:8px"><input id="ckCoupon" placeholder="BABY10"><button class="btn3" onclick="applyCoupon()">Apply</button></div>
+  </div>
+  <div id="ck2" class="form" style="display:none">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Demo checkout — no real payment is processed. In production this connects to an authorized payment gateway (e.g. Stripe) in test/sandbox mode. Card numbers are never stored.</p>
+    <label>Card number</label><input placeholder="4242 4242 4242 4242">
+    <label>Expiry</label><input placeholder="12/28">
+    <label>CVC</label><input placeholder="•••">
+  </div>
+  <div id="ck3" style="display:none;text-align:center;padding:16px">
+    <div style="font-size:56px">✅</div>
+    <h3>Order Confirmed!</h3>
+    <p style="color:var(--muted);margin:8px 0">Order <b id="orderNo"></b> has been placed. Use it to track your order anytime.</p>
+    <button class="btn-add" onclick="closeAll()">Continue Shopping</button>
+  </div>
+  <div id="ckNav" style="display:flex;justify-content:space-between;margin-top:16px">
+    <button class="btn3" id="ckBack" style="visibility:hidden" onclick="ckStep(-1)">← Back</button>
+    <button class="btn2" id="ckNext" onclick="ckStep(1)">Continue →</button>
+  </div>
+</div></div>
+
+<!-- ACCOUNT MODAL -->
+<div class="modal" id="accountModal"><div class="box" style="max-width:420px;padding:28px">
+  <button class="close" onclick="closeAll()">✕</button>
+  <h2 style="margin-bottom:14px">My Account</h2>
+  <div id="acctLoggedOut" class="form">
+    <label>Email</label><input id="liEmail" placeholder="you@email.com">
+    <label>Password</label><input type="password" placeholder="••••••••">
+    <button class="btn-add" style="width:100%;padding:11px" onclick="doLogin()">Sign In</button>
+    <p style="font-size:13px;margin-top:10px;text-align:center">New here? <a href="#" style="color:var(--accent)" onclick="toast('Registration would be enabled with a real backend');return false">Create account</a> · <a href="#" style="color:var(--accent)" onclick="toast('Password recovery email sent (demo)');return false">Forgot password?</a></p>
+  </div>
+  <div id="acctLoggedIn" style="display:none">
+    <p>👋 Welcome, <b id="acctName"></b>!</p>
+    <div style="display:grid;gap:8px;margin-top:14px">
+      <button class="btn3" onclick="closeAll();openModal('ordersModal')">📦 My Orders</button>
+      <button class="btn3" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+</div></div>
+
+<!-- ORDERS / TRACK MODAL -->
+<div class="modal" id="ordersModal"><div class="box" style="max-width:560px;padding:28px">
+  <button class="close" onclick="closeAll()">✕</button>
+  <h2 style="margin-bottom:14px">My Orders</h2>
+  <div id="ordersList"><p style="color:var(--muted);font-size:14px">No orders yet.</p></div>
+</div></div>
+<div class="modal" id="trackModal"><div class="box" style="max-width:440px;padding:28px">
+  <button class="close" onclick="closeAll()">✕</button>
+  <h2 style="margin-bottom:14px">Track My Order</h2>
+  <div class="form"><input id="trackInput" placeholder="Enter order number (e.g. BS-1001)"><button class="btn-add" style="width:100%;padding:11px" onclick="doTrack()">Track</button></div>
+  <div id="trackResult" style="margin-top:12px;font-size:14px"></div>
+</div></div>
+
+<!-- WISHLIST MODAL -->
+<div class="modal" id="wishModal"><div class="box" style="max-width:560px;padding:28px">
+  <button class="close" onclick="closeAll()">✕</button>
+  <h2 style="margin-bottom:14px">❤️ My Wishlist</h2>
+  <div id="wishList"></div>
+</div></div>
+
+<!-- ADMIN MODAL -->
+<div class="modal" id="adminModal"><div class="box" style="max-width:960px;padding:28px">
+  <button class="close" onclick="closeAll()">✕</button>
+  <div id="adminLogin" class="form" style="max-width:380px;margin:0 auto">
+    <h2 style="margin-bottom:14px">🔐 Owner Login</h2>
+    <label>Owner email</label><input id="admUser" placeholder="owner@babysstores.com">
+    <label>Password</label><input id="admPass" type="password" placeholder="••••••••">
+    <button class="btn-add" style="width:100%;padding:11px" onclick="adminAuth()">Enter Dashboard</button>
+    <p style="font-size:12px;color:var(--muted);margin-top:8px">Demo password: <b>owner123</b> (set via secure auth in production)</p>
+  </div>
+  <div id="adminDash" style="display:none">
+    <h2>Owner Dashboard</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Single-seller mode: only you can manage products, orders and settings.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px" id="adminStats"></div>
+    <div class="sec-h"><h2 style="font-size:16px">Products</h2><button class="btn-add" style="padding:8px 16px" onclick="adminAdd()">+ Add Product</button></div>
+    <table id="adminTable"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th></th></tr></thead><tbody id="adminRows"></tbody></table>
+  </div>
+</div></div>
+
+<div id="toast"></div>
+
+<script>
+/* ============ DEMO DATA ============ */
+const CATEGORIES=["Electronics","Mobile & Accessories","Computers","Fashion","Shoes & Bags","Home & Kitchen","Beauty","Baby & Kids","Toys","Sports","Watches & Jewelry","Automotive","Home Decor","Pet Supplies","Garden"];
+const ICONS={Electronics:"🎧","Mobile & Accessories":"📱","Computers":"💻",Fashion:"👗","Shoes & Bags":"👜","Home & Kitchen":"🍳",Beauty:"💄","Baby & Kids":"🍼","Toys":"🧸","Sports":"⚽","Watches & Jewelry":"⌚","Automotive":"🚗","Home Decor":"🕯️","Pet Supplies":"🐾","Garden":"🌱"};
+let PRODUCTS=[
+{id:1,name:"ProSound Wireless Headphones ANC",cat:"Electronics",price:89.99,old:149.99,stock:42,rating:4.8,rc:2314,icon:"🎧",tags:["deal","best","feat"],desc:"Active noise cancelling over-ear headphones with 40h battery, Bluetooth 5.3 and deep bass drivers.",specs:"Battery: 40h | Bluetooth 5.3 | Weight: 250g | USB-C fast charge"},
+{id:2,name:"SmartFit Watch Series 6",cat:"Watches & Jewelry",price:59.99,old:99.99,stock:87,rating:4.7,rc:1890,icon:"⌚",tags:["deal","best"],desc:"AMOLED fitness smartwatch with heart rate, SpO2, sleep tracking and 10-day battery.",specs:"1.43\" AMOLED | 5ATM | GPS | 10-day battery"},
+{id:3,name:"Ultra HD Action Camera 4K",cat:"Electronics",price:74.99,old:119.99,stock:23,rating:4.6,rc:967,icon:"📷",tags:["deal","new"],desc:"Waterproof 4K/60fps action camera with stabilization and WiFi app control.",specs:"4K60 | 30m waterproof | 170° FOV | WiFi"},
+{id:4,name:"Handmade Leather Crossbody Bag",cat:"Shoes & Bags",price:45.00,old:79.00,stock:31,rating:4.9,rc:754,icon:"👜",tags:["feat","best"],desc:"Genuine leather crossbody with adjustable strap, made with premium stitching.",specs:"Genuine leather | 26×18×9cm | Adjustable strap"},
+{id:5,name:"Ceramic Non-Stick Cookware Set 12pc",cat:"Home & Kitchen",price:99.00,old:159.00,stock:18,rating:4.7,rc:1120,icon:"🍳",tags:["deal","feat"],desc:"12-piece ceramic non-stick set, oven-safe, PFOA-free, suitable for all stovetops.",specs:"12 pieces | Oven-safe 260°C | PFOA-free"},
+{id:6,name:"Organic Glow Skincare Kit",cat:"Beauty",price:34.99,old:54.99,stock:60,rating:4.8,rc:2033,icon:"💄",tags:["new","best"],desc:"5-step organic skincare ritual with vitamin C serum, moisturizer and clay mask.",specs:"Vegan | Cruelty-free | All skin types"},
+{id:7,name:"SoftPlush Baby Blanket Set",cat:"Baby & Kids",price:24.99,old:39.99,stock:75,rating:4.9,rc:3210,icon:"🍼",tags:["best","feat"],desc:"Ultra-soft hypoallergenic baby blanket 3-pack in pastel tones. OEKO-TEX certified.",specs:"100% organic cotton | 3-pack | Machine washable"},
+{id:8,name:"RC Stunt Car 360° Flip",cat:"Toys",price:29.99,old:49.99,stock:52,rating:4.5,rc:876,icon:"🧸",tags:["deal","new"],desc:"Double-sided remote control stunt car with 360° flips, 2.4GHz and rechargeable battery.",specs:"2.4GHz | USB rechargeable | Ages 6+"},
+{id:9,name:"Pro Yoga Mat 6mm Non-Slip",cat:"Sports",price:22.99,old:35.99,stock:90,rating:4.6,rc:1450,icon:"🧘",tags:["new"],desc:"High-density TPE yoga mat with alignment lines and carry strap.",specs:"6mm thick | 183×61cm | TPE eco material"},
+{id:10,name:"Mini Projector Home Theater",cat:"Electronics",price:129.99,old:199.99,stock:12,rating:4.7,rc:640,icon:"📽️",tags:["deal","feat"],desc:"Native 1080p mini projector with WiFi 6, 200\" display support and built-in speaker.",specs:"1080p | WiFi 6 | 200\" max | HDMI/USB"},
+{id:11,name:"Minimalist Gold-Plated Necklace",cat:"Watches & Jewelry",price:19.99,old:32.99,stock:140,rating:4.8,rc:980,icon:"📿",tags:["new"],desc:"18K gold-plated minimalist pendant necklace, tarnish-resistant and hypoallergenic.",specs:"18K plated | 45cm chain | Hypoallergenic"},
+{id:12,name:"Car Vacuum Cleaner 12V High Power",cat:"Automotive",price:27.99,old:44.99,stock:64,rating:4.5,rc:720,icon:"🚗",tags:["deal"],desc:"Portable 12V car vacuum with HEPA filter, LED light and 5 attachments.",specs:"8000Pa | HEPA | 5 attachments"},
+{id:13,name:"Aromatherapy Diffuser + 6 Oils",cat:"Home Decor",price:31.99,old:49.99,stock:48,rating:4.7,rc:1540,icon:"🕯️",tags:["feat"],desc:"300ml ultrasonic diffuser with 7 LED colors and 6 pure essential oils included.",specs:"300ml | 8h runtime | 7 LED modes"},
+{id:14,name:"Interactive Cat Toy Tower",cat:"Pet Supplies",price:18.99,old:29.99,stock:83,rating:4.6,rc:660,icon:"🐾",tags:["new"],desc:"3-level interactive cat tower with spinning balls to keep cats entertained for hours.",specs:"Non-slip base | BPA-free | All cat sizes"},
+{id:15,name:"Solar Garden Light Set (8 pack)",cat:"Garden",price:39.99,old:64.99,stock:37,rating:4.7,rc:890,icon:"☀️",tags:["deal","best"],desc:"8 warm-white solar path lights, auto on/off, IP65 waterproof with 8h runtime.",specs:"Solar | IP65 | Auto on/off | 8-pack"},
+{id:16,name:"Ergonomic Laptop Stand Aluminum",cat:"Computers",price:25.99,old:42.99,stock:58,rating:4.8,rc:1310,icon:"💻",tags:["best"],desc:"Adjustable aluminum laptop stand, foldable, fits 10–17\" laptops, improves posture.",specs:"Aluminum | Adjustable | Fits 10–17\""},
+{id:17,name:"Fast Charge Power Bank 20000mAh",cat:"Mobile & Accessories",price:33.99,old:54.99,stock:96,rating:4.7,rc:2780,icon:"🔋",tags:["best","deal"],desc:"20000mAh PD 22.5W fast-charge power bank with digital display and dual USB ports.",specs:"20000mAh | 22.5W PD | USB-C in/out"},
+{id:18,name:"Kids' LED Drawing Board",cat:"Baby & Kids",price:15.99,old:25.99,stock:110,rating:4.5,rc:430,icon:"🎨",tags:["new"],desc:"Glowing LED drawing board with 8 light effects and 3 pens — mess-free creativity.",specs:"8 effects | 3 pens | Ages 3+"}
+];
+let CART=[],WISHLIST=[],ORDERS=[],USER=null,COUPON=0;
+const RATES={USD:1,EUR:0.92,GBP:0.79};
+const fmt=p=>{const c=document.getElementById('currency').value;return (c==='EUR'?'€':c==='GBP'?'£':'$')+(p*RATES[c]).toFixed(2)};
+const stars=r=>'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r));
+
+/* ============ TOAST ============ */
+let toastT;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200)}
+
+/* ============ MODALS / DRAWER ============ */
+function openModal(id){document.getElementById(id).classList.add('on');document.getElementById('overlay').classList.add('on')}
+function closeAll(){document.querySelectorAll('.modal,.drawer').forEach(e=>e.classList.remove('on'));document.getElementById('overlay').classList.remove('on')}
+function openCart(e){if(e)e.preventDefault();renderCart();document.getElementById('cartDrawer').classList.add('on');document.getElementById('overlay').classList.add('on')}
+
+/* ============ VIEWS ============ */
+function showView(v){['home','shop','page'].forEach(x=>document.getElementById('view-'+x).style.display=x===v?'block':'none');window.scrollTo({top:0})}
+function goHome(e){if(e)e.preventDefault();showView('home')}
+function showAll(e){if(e)e.preventDefault();document.getElementById('shopTitle').textContent='All Products';shopFilter=null;renderShop();showView('shop')}
+let shopFilter=null;
+function filterTag(e,t){if(e)e.preventDefault();shopFilter=t;document.getElementById('shopTitle').textContent=t==='deal'?"⚡ Today's Deals":t==='new'?'✨ New Arrivals':t==='best'?'🔥 Best Sellers':'Products';renderShop();showView('shop')}
+function toggleCats(e){if(e)e.preventDefault();showAll(e);document.getElementById('catStrip').scrollIntoView({behavior:'smooth'})}
+function browseCat(c){shopFilter='cat:'+c;document.getElementById('shopTitle').textContent=ICONS[c]+' '+c;renderShop();showView('shop')}
+function doSearch(){const q=document.getElementById('q').value.trim().toLowerCase();if(!q)return;shopFilter='q:'+q;document.getElementById('shopTitle').textContent='Search: "'+q+'"';renderShop();showView('shop')}
+
+/* ============ RENDER ============ */
+function card(p){const off=p.old?Math.round((1-p.price/p.old)*100):0;
+ return `<div class="pcard">
+  <div class="pimg" onclick="openProduct(${p.id})" style="cursor:pointer">${p.icon}${off?`<span class="off">-${off}%</span>`:''}</div>
+  <div class="pbody">
+   <div class="pcat">${p.cat}</div>
+   <div class="pname" onclick="openProduct(${p.id})" style="cursor:pointer">${p.name}</div>
+   <div class="stars">${stars(p.rating)} <span style="color:var(--muted)">(${p.rc})</span></div>
+   <div class="price"><b>${fmt(p.price)}</b>${p.old?`<s>${fmt(p.old)}</s>`:''}</div>
+   <div class="pbtns">
+    <button class="btn-add" onclick="addToCart(${p.id})">Add to Cart</button>
+    <button class="btn-wish ${WISHLIST.includes(p.id)?'on':''}" onclick="toggleWish(${p.id})">❤</button>
+   </div>
+  </div></div>`}
+function renderProducts(){
+ document.getElementById('grid-deals').innerHTML=PRODUCTS.filter(p=>p.tags.includes('deal')).slice(0,6).map(card).join('');
+ document.getElementById('grid-best').innerHTML=PRODUCTS.filter(p=>p.tags.includes('best')).slice(0,6).map(card).join('');
+ document.getElementById('grid-new').innerHTML=PRODUCTS.filter(p=>p.tags.includes('new')).slice(0,6).map(card).join('');
+ document.getElementById('grid-feat').innerHTML=PRODUCTS.filter(p=>p.tags.includes('feat')).slice(0,6).map(card).join('');
+ document.getElementById('catStrip').innerHTML=CATEGORIES.map(c=>`<div class="cat" onclick="browseCat('${c}')"><span>${ICONS[c]}</span>${c}</div>`).join('');
+ renderShop();
+}
+function renderShop(){
+ let list=[...PRODUCTS];
+ if(shopFilter&&shopFilter.startsWith('cat:'))list=list.filter(p=>p.cat===shopFilter.slice(4));
+ else if(shopFilter&&shopFilter.startsWith('q:')){const q=shopFilter.slice(2);list=list.filter(p=>(p.name+' '+p.cat+' '+p.desc).toLowerCase().includes(q))}
+ else if(shopFilter)list=list.filter(p=>p.tags.includes(shopFilter));
+ const min=parseFloat(document.getElementById('fMin').value),max=parseFloat(document.getElementById('fMax').value);
+ if(!isNaN(min))list=list.filter(p=>p.price>=min);
+ if(!isNaN(max))list=list.filter(p=>p.price<=max);
+ if(document.getElementById('fDeal').checked)list=list.filter(p=>p.old&&p.price<p.old);
+ switch(document.getElementById('fSort').value){
+  case 'low':list.sort((a,b)=>a.price-b.price);break;
+  case 'high':list.sort((a,b)=>b.price-a.price);break;
+  case 'rate':list.sort((a,b)=>b.rating-a.rating);break;
+  case 'new':list.sort((a,b)=>b.id-a.id);break;
+  default:list.sort((a,b)=>b.rc-a.rc)}
+ document.getElementById('grid-shop').innerHTML=list.length?list.map(card).join(''):'<p style="color:var(--muted)">No products found. Try different filters.</p>';
+}
+
+/* ============ PRODUCT DETAIL ============ */
+let pdSel={};
+function openProduct(id){const p=PRODUCTS.find(x=>x.id===id);const off=p.old?Math.round((1-p.price/p.old)*100):0;
+ pdSel={qty:1};
+ document.getElementById('pdContent').innerHTML=`
+  <div class="gal">${p.icon}</div>
+  <div>
+   <div class="pcat">${p.cat} · Sold & shipped by Baby's Stores</div>
+   <h2>${p.name}</h2>
+   <div class="stars" style="font-size:14px">${stars(p.rating)} ${p.rating} · ${p.rc} reviews</div>
+   <div class="price" style="margin:12px 0"><span class="big">${fmt(p.price)}</span>${p.old?`<s>${fmt(p.old)}</s> <span class="off" style="position:static">-${off}%</span>`:''}</div>
+   <p style="font-size:14px;color:var(--muted);line-height:1.6">${p.desc}</p>
+   <p style="font-size:12px;color:var(--muted);margin-top:8px">📦 ${p.stock>0?`<b style="color:var(--ok)">In stock</b> (${p.stock} available)`:'<b style="color:#b91c1c">Out of stock</b>'} · Ships worldwide in 7–14 days · Free returns within 30 days</p>
+   <p style="font-size:13px;margin-top:10px"><b>Quantity:</b>
+    <span class="qty" style="display:inline-flex;margin-left:8px"><button onclick="pdQty(-1)">−</button><b id="pdQty" style="width:30px;text-align:center">1</b><button onclick="pdQty(1)">+</button></span></p>
+   <div style="display:flex;gap:10px;margin-top:16px">
+    <button class="btn-add" style="flex:1;padding:13px" ${p.stock<1?'disabled':''} onclick="addToCart(${p.id},pdSel.qty)">🛒 Add to Cart</button>
+    <button class="btn2" onclick="addToCart(${p.id},pdSel.qty);closeAll();startCheckout()">Buy Now</button>
+    <button class="btn-wish ${WISHLIST.includes(p.id)?'on':''}" style="padding:13px" onclick="toggleWish(${p.id})">❤</button>
+   </div>
+   <h4 style="margin-top:18px;font-size:14px">Specifications</h4>
+   <p style="font-size:13px;color:var(--muted)">${p.specs}</p>
+   <h4 style="margin-top:14px;font-size:14px">Customer Reviews</h4>
+   <p style="font-size:13px">★★★★★ “Excellent quality and fast shipping!” — Verified buyer</p>
+  </div>`;
+ openModal('productModal')}
+function pdQty(d){pdSel.qty=Math.max(1,(pdSel.qty||1)+d);document.getElementById('pdQty').textContent=pdSel.qty}
+
+/* ============ CART / WISHLIST ============ */
+function addToCart(id,qty=1){const it=CART.find(c=>c.id===id);it?it.qty+=qty:CART.push({id,qty});updateBadges();renderCart();toast('Added to cart 🛒')}
+function toggleWish(id){const i=WISHLIST.indexOf(id);i>-1?WISHLIST.splice(i,1):WISHLIST.push(id);updateBadges();renderProducts();if(document.getElementById('wishModal').classList.contains('on'))renderWish();toast(i>-1?'Removed from wishlist':'Added to wishlist ❤️')}
+function openWishlist(e){e.preventDefault();renderWish();openModal('wishModal')}
+function renderWish(){document.getElementById('wishList').innerHTML=WISHLIST.length?WISHLIST.map(id=>{const p=PRODUCTS.find(x=>x.id===id);
+ return `<div class="citem"><div class="ci">${p.icon}</div><div class="grow"><b style="font-size:13px">${p.name}</b><div class="price"><b>${fmt(p.price)}</b></div></div>
+ <button class="btn-add" style="padding:7px 12px" onclick="addToCart(${p.id})">Add</button>
+ <button class="btn3" style="padding:6px 10px" onclick="toggleWish(${p.id})">✕</button></div>`}).join(''):'<p style="color:var(--muted);font-size:14px">Your wishlist is empty.</p>'}
+function updateBadges(){document.getElementById('cartCount').textContent=CART.reduce((s,c)=>s+c.qty,0);document.getElementById('wishCount').textContent=WISHLIST.length}
+function renderCart(){
+ const box=document.getElementById('cartItems');
+ if(!CART.length){box.innerHTML='<p style="color:var(--muted);text-align:center;padding:30px">Your cart is empty.<br>Start shopping! 🛍️</p>';document.getElementById('cartSub').textContent=fmt(0);return}
+ box.innerHTML=CART.map((c,i)=>{const p=PRODUCTS.find(x=>x.id===c.id);
+  return `<div class="citem"><div class="ci">${p.icon}</div>
+   <div class="grow"><b style="font-size:13px">${p.name}</b><div class="price" style="font-size:12px"><b>${fmt(p.price)}</b></div>
+   <span class="qty"><button onclick="cQty(${i},-1)">−</button><b style="font-size:12px">${c.qty}</b><button onclick="cQty(${i},1)">+</button></span></div>
+   <div style="text-align:right"><b style="font-size:13px">${fmt(p.price*c.qty)}</b><br><a href="#" style="font-size:12px;color:#b91c1c" onclick="CART.splice(${i},1);updateBadges();renderCart();return false">Remove</a></div></div>`}).join('');
+ document.getElementById('cartSub').textContent=fmt(CART.reduce((s,c)=>s+PRODUCTS.find(p=>p.id===c.id).price*c.qty,0))}
+function cQty(i,d){CART[i].qty=Math.max(1,CART[i].qty+d);updateBadges();renderCart()}
+
+/* ============ CHECKOUT ============ */
+let step=1;
+function startCheckout(){if(!CART.length)return toast('Your cart is empty');closeAll();step=1;ckShow();openModal('checkoutModal')}
+function ckShow(){[1,2,3].forEach(n=>{document.getElementById('ck'+n).style.display=step===n?'block':'none';document.getElementById('s'+n).className=step>=n?'on':''});
+ document.getElementById('ckBack').style.visibility=step>1?'visible':'hidden';
+ document.getElementById('ckNext').style.display=step===3?'none':'inline-block';
+ document.getElementById('ckNext').textContent=step===2?'Pay '+fmt(totalDue())+' →':'Continue →'}
+function ckStep(d){if(d>0&&step===1){if(!document.getElementById('ckName').value||!document.getElementById('ckAddr').value)return toast('Please fill name and address');saveOrder()}
+ if(d>0&&step===2){} step=Math.min(3,Math.max(1,step+d));ckShow()}
+function totalDue(){const sub=CART.reduce((s,c)=>s+PRODUCTS.find(p=>p.id===c.id).price*c.qty,0);const ship=parseFloat(document.getElementById('ckShip')?.value||4.99);return Math.max(0,(sub+ship)*(1-COUPON))}
+function applyCoupon(){COUPON=document.getElementById('ckCoupon').value.trim().toUpperCase()==='BABY10'?0.10:0;toast(COUPON?'Coupon applied: 10% off 🎉':'Invalid coupon code')}
+function saveOrder(){const no='BS-'+(1000+ORDERS.length+1);
+ ORDERS.push({no,items:CART.map(c=>({...c})),total:totalDue(),status:3,date:new Date().toLocaleDateString(),name:document.getElementById('ckName').value});
+ document.getElementById('orderNo').textContent=no;CART=[];updateBadges()}
+
+/* ============ ACCOUNT / ORDERS / TRACKING ============ */
+function doLogin(){const e=document.getElementById('liEmail').value;if(!e.includes('@'))return toast('Enter a valid email');USER={name:e.split('@')[0]};renderAcct();toast('Signed in 👋')}
+function doLogout(){USER=null;renderAcct();toast('Signed out')}
+function renderAcct(){document.getElementById('acctLoggedOut').style.display=USER?'none':'block';document.getElementById('acctLoggedIn').style.display=USER?'block':'none';if(USER)document.getElementById('acctName').textContent=USER.name}
+function renderOrders(){const l=document.getElementById('ordersList');const STAT=['Order Placed','Payment Confirmed','Processing','Shipped','Out for Delivery','Delivered','Cancelled'];
+ l.innerHTML=ORDERS.length?ORDERS.map(o=>`<div style="border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px">
+  <b>${o.no}</b> <span style="font-size:12px;color:var(--muted)">· ${o.date}</span>
+  <span class="tag ${o.status===6?'bad':'ok'}" style="float:right">${STAT[o.status]}</span>
+  <div style="font-size:13px;margin-top:6px">${o.items.map(c=>PRODUCTS.find(p=>p.id===c.id).name+' ×'+c.qty).join(', ')}</div>
+  <div style="font-size:13px;margin-top:4px"><b>${fmt(o.total)}</b></div></div>`).join(''):'<p style="color:var(--muted);font-size:14px">No orders yet.</p>'}
+function doTrack(){const q=document.getElementById('trackInput').value.trim().toUpperCase();const o=ORDERS.find(x=>x.no===q);const STAT=['Order Placed','Payment Confirmed','Processing','Shipped','Out for Delivery','Delivered','Cancelled'];
+ document.getElementById('trackResult').innerHTML=o?`<div class="tag ${o.status===6?'bad':'ok'}" style="font-size:13px">Status: ${STAT[o.status]}</div>
+  <p style="margin-top:8px">${STAT.slice(0,o.status+1).map((s,i)=>`<span style="color:${i<=o.status?'var(--ok)':'var(--line)'}">●</span> ${s}${i<o.status?'<br>':''}`).join('')}</p>`
+ :'<p style="color:#b91c1c;font-size:14px">Order not found. Check the number and try again.</p>'}
+
+/* ============ ADMIN (OWNER ONLY) ============ */
+function openAdmin(e){e.preventDefault();openModal('adminModal')}
+function adminAuth(){if(document.getElementById('admPass').value==='owner123'){document.getElementById('adminLogin').style.display='none';document.getElementById('adminDash').style.display='block';renderAdmin();toast('Welcome back, owner 👑')}else toast('Wrong password')}
+function renderAdmin(){
+ const rev=ORDERS.reduce((s,o)=>s+o.total,0);
+ document.getElementById('adminStats').innerHTML=[['💰 Total Sales',fmt(rev)],['📦 Total Orders',ORDERS.length],['👥 Customers',USER?1:0],['🏷️ Products',PRODUCTS.length],['⏳ Pending',ORDERS.filter(o=>o.status<2).length],['✅ Completed',ORDERS.filter(o=>o.status===5).length]]
+  .map(s=>`<div style="background:#f8f9fa;border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center"><div style="font-size:12px;color:var(--muted)">${s[0]}</div><div style="font-size:18px;font-weight:700">${s[1]}</div></div>`).join('');
+ document.getElementById('adminRows').innerHTML=PRODUCTS.map(p=>`<tr>
+  <td>${p.icon} ${p.name}</td><td>${p.cat}</td><td>${fmt(p.price)}</td>
+  <td>${p.stock}</td><td>${p.stock>0?'<span class="tag ok">Active</span>':'<span class="tag bad">Out of stock</span>'}</td>
+  <td><button class="btn3" style="padding:5px 10px;font-size:12px" onclick="adminEdit(${p.id})">Edit</button>
+  <button class="btn3" style="padding:5px 10px;font-size:12px;color:#b91c1c;border-color:#b91c1c" onclick="adminDel(${p.id})">Delete</button></td></tr>`).join('')}
+function adminAdd(){const name=prompt('Product name:');if(!name)return;const price=parseFloat(prompt('Price (USD):','29.99'))||29.99;
+ PRODUCTS.push({id:Date.now(),name,cat:'Electronics',price,old:null,stock:50,rating:5,rc:0,icon:'🆕',tags:['new'],desc:'New product by the owner.',specs:'—'});
+ renderProducts();renderAdmin();toast('Product added ✔')}
+function adminEdit(id){const p=PRODUCTS.find(x=>x.id===id);const np=parseFloat(prompt('New price for "'+p.name+'":',p.price));if(!isNaN(np)){p.price=np;renderProducts();renderAdmin();toast('Price updated ✔')}}
+function adminDel(id){if(confirm('Delete this product?')){PRODUCTS=PRODUCTS.filter(p=>p.id!==id);renderProducts();renderAdmin();toast('Product deleted')}}
+
+/* ============ STATIC PAGES ============ */
+const PAGES={
+ about:{t:'About Us',b:"<p>Baby's Stores is a single-owner international e-commerce store founded on one simple idea: everything you love, all in one place. Every product in our catalog is personally selected, quality-checked, and shipped directly by us.</p><p style='margin-top:10px'>There are no third-party sellers, no marketplace listings, and no middlemen — just one dedicated owner committed to great products, fair prices, and worldwide delivery.</p>"},
+ contact:{t:'Contact Us',b:"<p>📧 support@babysstores.com<br>📞 +1 (555) 010-2266<br>🕐 Mon–Sat, 9:00–18:00 GMT<br><br>We usually reply within 24 hours.</p>"},
+ faq:{t:'FAQ',b:"<p><b>Who sells the products?</b><br>Only the owner of Baby's Stores. We are a single-seller store — no third parties ever.</p><p style='margin-top:10px'><b>How long is shipping?</b><br>Standard 7–14 business days worldwide; express 3–5 days. Free standard shipping on orders over $49.</p><p style='margin-top:10px'><b>How do I track my order?</b><br>Use the Track My Order page with the order number from your confirmation.</p><p style='margin-top:10px'><b>What payment methods do you accept?</b><br>Major cards and popular digital wallets through our secure payment gateway.</p>"},
+ shipping:{t:'Shipping Policy',b:"<p>We ship to 100+ countries. Standard shipping (7–14 business days) is $4.99 and free on orders over $49. Express shipping (3–5 business days) is $14.99.</p><p style='margin-top:10px'>Orders are processed within 1–2 business days. Tracking numbers are provided for every shipment.</p>"},
+ returns:{t:'Return & Refund Policy',b:"<p>Not happy with your purchase? Return it within 30 days of delivery for a full refund. Items must be unused and in original packaging.</p><p style='margin-top:10px'>Refunds are processed to the original payment method within 5–10 business days after we receive the return.</p>"},
+ privacy:{t:'Privacy Policy',b:"<p>We collect only the information needed to process and deliver your orders. We never sell your data. Payment card details are processed by our PCI-compliant payment gateway and are never stored on our servers.</p>"},
+ terms:{t:'Terms & Conditions',b:"<p>By using Baby's Stores you agree to our store policies. Baby's Stores is a single-owner business; all products are sold directly by the owner. Prices and availability may change without notice. All disputes are handled under applicable consumer protection law.</p>"}
+};
+function openPage(k){const p=PAGES[k];document.getElementById('pageTitle').textContent=p.t;document.getElementById('pageBody').innerHTML=p.b;showView('page')}
+
+/* ============ HERO SLIDER ============ */
+const slides=document.querySelectorAll('.slide');let cur=0;
+const dots=document.getElementById('dots');
+slides.forEach((_,i)=>{const d=document.createElement('i');if(i===0)d.className='on';d.onclick=()=>goSlide(i);dots.appendChild(d)});
+function goSlide(i){cur=i;slides.forEach((s,j)=>s.classList.toggle('on',j===i));[...dots.children].forEach((d,j)=>d.className=j===i?'on':'')}
+setInterval(()=>goSlide((cur+1)%slides.length),5000);
+
+/* init */
+renderProducts();updateBadges();renderCart();
+document.getElementById('ordersModal').addEventListener('transitionend',renderOrders);
+const _om=openModal;openModal=function(id){_om(id);if(id==='ordersModal')renderOrders()};
+</script>
+</body>
+</html>
